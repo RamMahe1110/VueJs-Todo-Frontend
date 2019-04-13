@@ -1,0 +1,63 @@
+<script>
+import Navbar from "./components/Navbar.vue";
+import Todo from "./components/Todo.vue";
+
+export default {
+  name: "app",
+  components: {
+    Navbar,
+    Todo
+  },
+  data() {
+    return {
+      todos: []
+    };
+  },
+  methods: {
+    addTodo(todo) {
+      this.todos.push(todo);
+    },
+    deleteTodo(index) {
+      this.todos = this.todos.filter((todo, i) => i !== index);
+    },
+    finishTodo(index) {
+      this.todos = this.todos.map((todo, i) => {
+        if (i === index) {
+          todo.completed = !todo.completed;
+        }
+        return todo;
+      });
+    },
+    editTodo(data) {
+      this.todos = this.todos.map((t, index) => {
+        if (index == data.index) {
+          t.desc = data.data;
+        }
+        return t;
+      });
+    }
+  }
+};
+</script>
+
+<template>
+  <div id="app">
+    <Navbar/>
+    <Todo
+      v-bind:todos="todos"
+      v-on:add-todo="addTodo($event)"
+      v-on:del-todo="deleteTodo($event)"
+      v-on:finish-todo="finishTodo($event)"
+      v-on:edit-todo="editTodo($event)"
+    />
+  </div>
+</template>
+
+<style scoped>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+</style>
